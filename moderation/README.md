@@ -41,7 +41,7 @@ An innovative content moderation solution that leverages the power of Large Lang
 
 
 **Opportunities with Distillation**:
-- **Accuracy**: For only ~100 LLM labeled datapoints, the current DNN in `distilling_agentic_moderation.py` yields ~75% validation accuracy, at the time of writing this. This accuracy is expected to get better as the Modlee community grows. This means that 7.5 times out of 10 it produces the same decision as the LLM (GPT 3.5). This model is not optimized, even with the limited about of data.
+- **Accuracy**: For only ~100 LLM labeled datapoints, the current DNN in `distilling_agentic_moderation.py` yields ~75% validation accuracy, at the time of writing this. This accuracy is expected to get better as the Modlee community grows. This means that 7.5 times out of 10 it produces the same decision as the LLM (GPT 3.5).
 
 - **Automation**: Our DNN Recommendation technology puts custom DNN development for a dataset on autopilot, so as your LLM labels more data you can automatically replace it.
 
