@@ -1,4 +1,4 @@
-# Modlee Solutions Repository
+# Modlee Solutions
 
 Welcome to the **Modlee Solutions Repository**, a central hub for innovative, reusable solutions built around Modlee's core technology. This repository is designed to provide template implementations that demonstrate the versatility and power of Modlee's tools, enabling organizations to accelerate their machine learning workflows, automate complex tasks, and achieve scalable AI-driven results.
 
@@ -16,9 +16,6 @@ The Modlee Solutions Repository is designed to empower developers, data scientis
 At the heart of Modlee is the mission to **preserve, protect, and progress ML knowledge**. Modlee simplifies the ML R&D process by automating repetitive tasks, benchmarking models, and fostering collaboration through shared experiment insights. Whether you're a weekend hobbyist, a scaling AI startup, or a global enterprise, Modlee meets you wherever you are in your ML journey.
 
 Learn more about Modlee's tools and how they can revolutionize your ML workflows by visiting [www.modlee.ai](https://www.modlee.ai).
-
-
----
 
 ---
 
