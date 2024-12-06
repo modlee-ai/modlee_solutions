@@ -6,6 +6,14 @@ __pycache__/
 # C extensions
 *.so
 
+**/checkpoints/
+**/lightning_logs/
+**/mlruns/
+**/venv/
+**/*.pth
+**/*.onnx
+**/distilled_model_details.json
+
 # Distribution / packaging
 .Python
 build/

@@ -1,0 +1,17 @@
+{
+    "system_description": "A moderation system designed to flag offensive or inappropriate product reviews.",
+    "task": "Moderate product reviews",
+    "goal": "Determine if a review is offensive",
+    "decision_options": [
+        "offensive",
+        "appropriate",
+        "spam",
+        "toxic"
+    ],
+    "input": "Get rich fast! Visit www.quickcashspam.com to learn how!",
+    "output": "spam",
+    "llm_details": {
+        "model_name": "gpt-3.5-turbo",
+        "temperature": 0.0
+    }
+}

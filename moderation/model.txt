@@ -1,0 +1,15 @@
+<
+   ir_version: 8,
+   opset_import: ["" : 17],
+   producer_name: "pytorch",
+   producer_version: "2.3.0"
+>
+main_graph (float[input_1_dynamic_axes_1,312] input_1, float[20,312] model_0_model_weight, float[20] model_0_model_bias, float[128,20] model_1_model_Gemm_weight, float[128] model_1_model_Gemm_bias, float[64,128] model_1_model_Gemm_1_weight, float[64] model_1_model_Gemm_1_bias, float[2,64] model_1_model_Gemm_2_weight, float[2] model_1_model_Gemm_2_bias, float[4,2] model_2_model_weight, float[4] model_2_model_bias) => (float[gemm_output_0004_dynamic_axes_1,4] output_var) {
+   gemm_output_0000 = Gemm <alpha_ float = 1, beta_ float = 1, transB_ int = 1> (input_1, model_0_model_weight, model_0_model_bias)
+   gemm_output_0001 = Gemm <alpha_ float = 1, beta_ float = 1, transB_ int = 1> (gemm_output_0000, model_1_model_Gemm_weight, model_1_model_Gemm_bias)
+   relu_output_0000 = Relu (gemm_output_0001)
+   gemm_output_0002 = Gemm <alpha_ float = 1, beta_ float = 1, transB_ int = 1> (relu_output_0000, model_1_model_Gemm_1_weight, model_1_model_Gemm_1_bias)
+   relu_output_0001 = Relu (gemm_output_0002)
+   gemm_output_0003 = Gemm <alpha_ float = 1, beta_ float = 1, transB_ int = 1> (relu_output_0001, model_1_model_Gemm_2_weight, model_1_model_Gemm_2_bias)
+output_var = Gemm <alpha_ float = 1, beta_ float = 1, transB_ int = 1> (gemm_output_0003, model_2_model_weight, model_2_model_bias)
+}

@@ -1,0 +1,8 @@
+langchain==0.0.272  # Replace with the latest compatible version if needed
+openai==0.27.10     # OpenAI API client (required by LangChain)
+python-dotenv==1.0.0 # For managing environment variables, if needed
+torch
+transformers
+scikit-learn
+modlee
+pyyaml
