@@ -1,0 +1,17 @@
+{
+    "system_description": "A moderation system designed to flag offensive or inappropriate product reviews.",
+    "task": "Moderate product reviews",
+    "goal": "Determine if a review is offensive",
+    "decision_options": [
+        "offensive",
+        "appropriate",
+        "spam",
+        "toxic"
+    ],
+    "input": "What a joke! Whoever designed this clearly has no clue what they\u2019re doing.",
+    "output": "offensive",
+    "llm_details": {
+        "model_name": "gpt-3.5-turbo",
+        "temperature": 0.0
+    }
+}
