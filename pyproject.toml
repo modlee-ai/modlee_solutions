@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modlee_solutions"
+version = "0.1.0"
+description = "Modlee Solutions Package"
+dependencies = [
+    "langchain==0.0.272",  # Replace with the latest compatible version if needed
+    "openai==0.27.10",     # OpenAI API client (required by LangChain)
+    "python-dotenv==1.0.0", # For managing environment variables, if needed
+    "torch",
+    "transformers",
+    "scikit-learn",
+    "modlee",
+    "pyyaml",
+]
+
+[tool.setuptools]
+include-package-data = true
