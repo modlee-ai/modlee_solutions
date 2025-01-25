@@ -34,33 +34,11 @@ class ReviewModerationAgent:
         except:
             print('error loading distilled model')
 
-    def moderate_review(self, review_text, context=""):
+    def moderate_review_llm(self, review_text, context=""):
         """
-        Use the LLM or distilled model to decide if a review is offensive or appropriate.
+        Use the LLM to decide if a review is offensive or appropriate.
         """
         self.input = review_text
-
-        # Placeholder: Check if using distilled model is allowed
-        if self.allow_distilled_model:
-
-            # Check if distilled model and details file exist
-            if os.path.exists(self.distilled_model_path) and os.path.exists(self.details_path):
-                with open(self.details_path, "r") as f:
-                    details = json.load(f)
-
-                # Check if the distilled model accuracy meets the threshold
-                if details.get("final_accuracy_%", 0) >= self.distilled_model_accuracy_threshold:
-                    print('Note: agent using distilled model for moderation')
-                    # Load the label map
-                    label_map = details.get("label_map", {})
-                    reverse_label_map = {v: k for k, v in label_map.items()}
-
-                    predicted = run_inference_with_model(self.distilled_model,self.distilled_device,self.input)
-
-                    # Map the model's output to the corresponding decision option
-                    decision = reverse_label_map.get(predicted.item(), "unknown")
-                    return decision
-
 
         # Fallback to the current LLM-based review moderation flow
         print('Note: agent using llm pipeline for moderation')
@@ -102,32 +80,73 @@ class ReviewModerationAgent:
 
         return self.output
 
+
+    def moderate_review_distilled_model(self, review_text, context=""):
+        """
+        Use the distilled model to decide if a review is offensive or appropriate.
+        """
+        self.input = review_text
+
+        print('Note: agent using distilled model for moderation')
+        with open(self.details_path, "r") as f:
+            details = json.load(f)
+        # Load the label map
+        label_map = details.get("label_map", {})
+        reverse_label_map = {v: k for k, v in label_map.items()}
+
+        predicted = run_inference_with_model(self.distilled_model,self.distilled_device,self.input)
+
+        # Map the model's output to the corresponding decision option
+        decision = reverse_label_map.get(predicted.item(), "unknown")
+        return decision
+
+
+    def moderate_review_auto(self, review_text, context=""):
+        """
+        Use the LLM or distilled model to decide if a review is offensive or appropriate.
+        """
+
+        # Placeholder: Check if using distilled model is allowed
+        if self.allow_distilled_model:
+
+            # Check if distilled model and details file exist
+            if os.path.exists(self.distilled_model_path) and os.path.exists(self.details_path):
+                with open(self.details_path, "r") as f:
+                    details = json.load(f)
+
+                # Check if the distilled model accuracy meets the threshold
+                if details.get("final_accuracy_%", 0) >= self.distilled_model_accuracy_threshold:
+                    return self.moderate_review_distilled_model(review_text)
+
+        return self.moderate_review_llm(review_text)
+
     def save_to_json(self, folder_path):
         """
         Save class variables as a JSON file in the specified folder path.
         """
-        data = {
-            "system_description": self.system_description,
-            "task": self.task,
-            "goal": self.goal,
-            "decision_options": self.decision_options,
-            "input": self.input,
-            "output": self.output,
-            "llm_details": {
-                "model_name": getattr(self.llm, "model_name", "unknown"),
-                "temperature": getattr(self.llm, "temperature", "unknown")
+        if folder_path != None:
+            data = {
+                "system_description": self.system_description,
+                "task": self.task,
+                "goal": self.goal,
+                "decision_options": self.decision_options,
+                "input": self.input,
+                "output": self.output,
+                "llm_details": {
+                    "model_name": getattr(self.llm, "model_name", "unknown"),
+                    "temperature": getattr(self.llm, "temperature", "unknown")
+                }
             }
-        }
 
-        os.makedirs(folder_path, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        file_name = f"review_moderation_data_{timestamp}.json"
-        file_path = os.path.join(folder_path, file_name)
+            os.makedirs(folder_path, exist_ok=True)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_name = f"review_moderation_data_{timestamp}.json"
+            file_path = os.path.join(folder_path, file_name)
 
-        with open(file_path, "w") as json_file:
-            json.dump(data, json_file, indent=4)
+            with open(file_path, "w") as json_file:
+                json.dump(data, json_file, indent=4)
 
-        print(f"Data saved to {file_path}")
+            print(f"Data saved to {file_path}")
 
 
 def select_review(file_path,i):
@@ -169,7 +188,7 @@ if __name__ == "__main__":
             llm=llm,
             system_description="A moderation system designed to flag offensive or inappropriate product reviews.",
             task="Moderate product reviews",
-            goal="Determine if a review is offensive",
+            goal="Classify the review as one of the following decisions",
             decision_options=["offensive", "appropriate", "spam", "toxic"],
             distilled_model_path="./moderation_results/distilled_model.pth",
             details_path="./moderation_results/distilled_model_details.json",
@@ -192,7 +211,7 @@ if __name__ == "__main__":
 
         # Moderate the review
         start_time = time.time()
-        result = agent.moderate_review(review_text, context=context)
+        result = agent.moderate_review_auto(review_text, context=context)
         end_time = time.time()
         elapsed_time = end_time - start_time
 

@@ -65,16 +65,19 @@ def load_data(data_dir):
     for filename in os.listdir(data_dir):
         if filename.endswith(".json") and 'distilled_model' not in filename:
             filepath = os.path.join(data_dir, filename)
-            with open(filepath, "r") as file:
-                data = json.load(file)
-                label = data["output"]
-                
-                # Dynamically assign a numeric label if not already mapped
-                if label not in label_map:
-                    label_map[label] = len(label_map)
-                
-                texts.append(data["input"])
-                labels.append(label_map[label])
+            try:
+                with open(filepath, "r") as file:
+                    data = json.load(file)
+                    label = data["output"]
+                    
+                    # Dynamically assign a numeric label if not already mapped
+                    if label not in label_map:
+                        label_map[label] = len(label_map)
+                    
+                    texts.append(data["input"])
+                    labels.append(label_map[label])
+            except:
+                print(f'error with trainging data file = {filepath}')
 
     print(f"Generated label map: {label_map}")
     return texts, labels, label_map
