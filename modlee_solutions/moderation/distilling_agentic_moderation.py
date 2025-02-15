@@ -132,7 +132,7 @@ def main(data_dir = "./moderation_results"):
 
     # Train-test split
     train_texts, val_texts, train_labels, val_labels = train_test_split(
-        texts, labels, test_size=0.5, random_state=42
+        texts, labels, test_size=0.2, random_state=42
     )
 
     # Datasets and DataLoaders
@@ -178,24 +178,24 @@ def main(data_dir = "./moderation_results"):
     else:
         existing_accuracy = 0
 
-    if final_accuracy > existing_accuracy:
-        # Convert to TorchScript using tracing
-        dummy_input = torch.randn(1, embedding_size)  # Single example with correct embedding size
-        traced_model = torch.jit.trace(model, dummy_input)
-        # Save the TorchScript model
-        traced_model.save(model_save_path)
-        print(f"Model saved to {model_save_path}")
+    # if final_accuracy > existing_accuracy:
+    # Convert to TorchScript using tracing
+    dummy_input = torch.randn(1, embedding_size)  # Single example with correct embedding size
+    traced_model = torch.jit.trace(model, dummy_input)
+    # Save the TorchScript model
+    traced_model.save(model_save_path)
+    print(f"Model saved to {model_save_path}")
 
-        # Save model details to JSON
-        details_data = {
-            "final_accuracy_%": final_accuracy,
-            "label_map": label_map
-        }
-        with open(details_save_path, "w") as f:
-            json.dump(details_data, f, indent=4)
-        print(f"Model details saved to {details_save_path}")
-    else:
-        print(f"Model not saved. Current accuracy ({final_accuracy}%) is not higher than existing accuracy ({existing_accuracy}%).")
+    # Save model details to JSON
+    details_data = {
+        "final_accuracy_%": final_accuracy,
+        "label_map": label_map
+    }
+    with open(details_save_path, "w") as f:
+        json.dump(details_data, f, indent=4)
+    print(f"Model details saved to {details_save_path}")
+    # else:
+    #     print(f"Model not saved. Current accuracy ({final_accuracy}%) is not higher than existing accuracy ({existing_accuracy}%).")
 
 
 

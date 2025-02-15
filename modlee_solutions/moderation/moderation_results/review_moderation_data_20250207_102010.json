@@ -1,0 +1,16 @@
+{
+    "system_description": "A moderation system designed to classify reviews.",
+    "task": "Moderate product reviews",
+    "goal": "Classify the review as one of the following decisions.",
+    "decision_options": [
+        "positive",
+        "negative",
+        "spam"
+    ],
+    "input": "DeepRest Memory Foam Mattress giveaway! Enter at www.fakesweepstakes.com!",
+    "output": "spam",
+    "llm_details": {
+        "model_name": "gpt-3.5-turbo",
+        "temperature": 0.0
+    }
+}

@@ -5,13 +5,13 @@ class Model(torch.nn.Module):
     
     def __init__(self):
         super().__init__()
-        setattr(self,'Gemm', torch.nn.modules.linear.Linear(**{'in_features':312,'out_features':20}))
-        setattr(self,'Gemm_1', torch.nn.modules.linear.Linear(**{'in_features':20,'out_features':128}))
+        setattr(self,'Gemm', torch.nn.modules.linear.Linear(**{'in_features':312,'out_features':10}))
+        setattr(self,'Gemm_1', torch.nn.modules.linear.Linear(**{'in_features':10,'out_features':128}))
         setattr(self,'Relu', torch.nn.modules.activation.ReLU(**{'inplace':False}))
         setattr(self,'Gemm_2', torch.nn.modules.linear.Linear(**{'in_features':128,'out_features':64}))
         setattr(self,'Relu_1', torch.nn.modules.activation.ReLU(**{'inplace':False}))
         setattr(self,'Gemm_3', torch.nn.modules.linear.Linear(**{'in_features':64,'out_features':2}))
-        setattr(self,'Gemm_4', torch.nn.modules.linear.Linear(**{'in_features':2,'out_features':4}))
+        setattr(self,'Gemm_4', torch.nn.modules.linear.Linear(**{'in_features':2,'out_features':3}))
     def forward(self, input_1):
         gemm = self.Gemm(input_1);  input_1 = None
         gemm_1 = self.Gemm_1(gemm);  gemm = None

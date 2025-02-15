@@ -176,25 +176,41 @@ def select_review(file_path,i):
 
 if __name__ == "__main__":
 
-    for i in range(3):
+    for i in range(60):
 
         print('simulating live moderation of review')
 
         # Initialize the ChatGPT model
         llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.0)
 
+        decision_option_context = """
+
+            Positive Reviews: These reviews express satisfaction with a product, focusing on its quality, functionality, and benefits. They often include praise, recommendations, and specific features that the user enjoyed.
+
+            Example: “This smartwatch has amazing battery life and tracks my workouts perfectly. Highly recommend!”
+            
+            Negative Reviews: These reviews express dissatisfaction but remain constructive and fact-based. They typically point out flaws, defects, misleading descriptions, or performance issues. Negative reviews may express frustration but do not include insults, personal attacks, or extreme language.
+
+            Example: “This coffee maker stopped working after a week, and customer service was no help. Waste of money!”
+            
+            Spam Reviews: These reviews do not provide genuine feedback about a product. Instead, they contain promotional content, misleading claims, or attempts to redirect users to external websites. They may push sales, exaggerate offers, or be completely irrelevant to the product being reviewed.
+
+            Example: “Get a free smartwatch now! Visit www.fakeprizes.com for exclusive deals!”
+                   
+         """
+
         # Initialize the agent
         agent = ReviewModerationAgent(
             llm=llm,
-            system_description="A moderation system designed to flag offensive or inappropriate product reviews.",
+            system_description="A moderation system designed to classify reviews.",
             task="Moderate product reviews",
-            goal="Classify the review as one of the following decisions",
-            decision_options=["offensive", "appropriate", "spam", "toxic"],
+            goal=f"Classify the review as one of the following decisions.",
+            decision_options=["positive", "negative", "spam"],
             distilled_model_path="./moderation_results/distilled_model.pth",
             details_path="./moderation_results/distilled_model_details.json",
             save_folder="./moderation_results",
             allow_distilled_model=True,
-            distilled_model_accuracy_threshold=60
+            distilled_model_accuracy_threshold=100
         )
 
         # Example usage
@@ -207,7 +223,7 @@ if __name__ == "__main__":
         review_text = random_review['text']
 
         # Context for moderation
-        context = ""
+        context = decision_option_context
 
         # Moderate the review
         start_time = time.time()
